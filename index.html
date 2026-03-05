@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <title>Yangsan Xi Park Felice — Premium Residences</title>
+    <meta name="description" content="Yangsan Xi Park Felice 프리미엄 레지던스. 탁월한 입지와 고급스러운 설계가 만나는 곳." />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500&display=swap" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/override.css" />
+
+    <style>
+        html {
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Gunmetal stage: top-level fixed layer, toggled by body.detail-stage-active -->
+    <div id="gunmetal-stage" aria-hidden="true"></div>
+
+    <!-- ══════════ INTRO OVERLAY ══════════ -->
+    <div id="intro-overlay">
+
+        <!-- Layer 1 – Single tower sketch: centered architectural watermark (inline SVG) -->
+        <div id="intro-watermark" aria-hidden="true">
+            <svg id="bldg-sketch" viewBox="0 0 200 520" xmlns="http://www.w3.org/2000/svg" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <defs>
+                    <filter id="sketch-jitter" x="-5%" y="-5%" width="110%" height="110%">
+                        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" seed="7" result="noise" />
+                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.1" xChannelSelector="R"
+                            yChannelSelector="G" />
+                    </filter>
+                </defs>
+                <g filter="url(#sketch-jitter)">
+                    <!-- Crown / antenna -->
+                    <line x1="100" y1="8" x2="100" y2="28" stroke="#8A8F98" stroke-width="0.8" stroke-opacity="0.18" />
+                    <!-- Penthouse cap -->
+                    <rect x="84" y="28" width="32" height="18" stroke="#9AA3AE" stroke-width="0.9"
+                        stroke-opacity="0.22" />
+                    <!-- Penthouse inner division -->
+                    <line x1="100" y1="28" x2="100" y2="46" stroke="#8A8F98" stroke-width="0.6" stroke-opacity="0.14" />
+                    <!-- Upper setback tier -->
+                    <rect x="72" y="46" width="56" height="60" stroke="#8A8F98" stroke-width="1.0"
+                        stroke-opacity="0.28" />
+                    <!-- Upper tier floor lines -->
+                    <line x1="72" y1="62" x2="128" y2="62" stroke="#9AA3AE" stroke-width="0.5" stroke-opacity="0.16" />
+                    <line x1="72" y1="78" x2="128" y2="78" stroke="#9AA3AE" stroke-width="0.5" stroke-opacity="0.14" />
+                    <line x1="72" y1="94" x2="128" y2="94" stroke="#9AA3AE" stroke-width="0.5" stroke-opacity="0.14" />
+                    <!-- Upper tier vertical spandrel -->
+                    <line x1="100" y1="46" x2="100" y2="106" stroke="#8A8F98" stroke-width="0.6"
+                        stroke-opacity="0.13" />
+                    <!-- Mid setback step (ledge) -->
+                    <line x1="68" y1="106" x2="132" y2="106" stroke="#8A8F98" stroke-width="1.1"
+                        stroke-opacity="0.30" />
+                    <!-- Main tower body -->
+                    <rect x="58" y="106" width="84" height="280" stroke="#7C8694" stroke-width="1.2"
+                        stroke-opacity="0.32" />
+                    <!-- Main tower vertical spandrels -->
+                    <line x1="79" y1="106" x2="79" y2="386" stroke="#9AA3AE" stroke-width="0.65"
+                        stroke-opacity="0.13" />
+                    <line x1="100" y1="106" x2="100" y2="386" stroke="#9AA3AE" stroke-width="0.65"
+                        stroke-opacity="0.13" />
+                    <line x1="121" y1="106" x2="121" y2="386" stroke="#9AA3AE" stroke-width="0.65"
+                        stroke-opacity="0.13" />
+                    <!-- Main tower floor bands (every 20px) -->
+                    <line x1="58" y1="126" x2="142" y2="126" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.13" />
+                    <line x1="58" y1="146" x2="142" y2="146" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.13" />
+                    <line x1="58" y1="166" x2="142" y2="166" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.13" />
+                    <line x1="58" y1="186" x2="142" y2="186" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="206" x2="142" y2="206" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="226" x2="142" y2="226" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="246" x2="142" y2="246" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="266" x2="142" y2="266" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="286" x2="142" y2="286" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="306" x2="142" y2="306" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="326" x2="142" y2="326" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="346" x2="142" y2="346" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <line x1="58" y1="366" x2="142" y2="366" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.12" />
+                    <!-- Mid setback lower step -->
+                    <line x1="50" y1="386" x2="150" y2="386" stroke="#8A8F98" stroke-width="1.0"
+                        stroke-opacity="0.28" />
+                    <!-- Lower podium body -->
+                    <rect x="44" y="386" width="112" height="72" stroke="#7C8694" stroke-width="1.1"
+                        stroke-opacity="0.28" />
+                    <!-- Podium vertical divisions -->
+                    <line x1="72" y1="386" x2="72" y2="458" stroke="#9AA3AE" stroke-width="0.6" stroke-opacity="0.12" />
+                    <line x1="100" y1="386" x2="100" y2="458" stroke="#9AA3AE" stroke-width="0.6"
+                        stroke-opacity="0.12" />
+                    <line x1="128" y1="386" x2="128" y2="458" stroke="#9AA3AE" stroke-width="0.6"
+                        stroke-opacity="0.12" />
+                    <!-- Podium floor line -->
+                    <line x1="44" y1="420" x2="156" y2="420" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.13" />
+                    <!-- Entrance canopy -->
+                    <line x1="80" y1="458" x2="120" y2="458" stroke="#8A8F98" stroke-width="1.0"
+                        stroke-opacity="0.26" />
+                    <!-- Ground line -->
+                    <line x1="30" y1="466" x2="170" y2="466" stroke="#8A8F98" stroke-width="1.2"
+                        stroke-opacity="0.22" />
+                    <!-- Ground shadow hatch -->
+                    <line x1="30" y1="470" x2="170" y2="470" stroke="#9AA3AE" stroke-width="0.5"
+                        stroke-opacity="0.10" />
+                    <line x1="30" y1="474" x2="170" y2="474" stroke="#9AA3AE" stroke-width="0.4"
+                        stroke-opacity="0.07" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- Layer 2 – Blueprint Panel (kept as GSAP fade target, visuals removed) -->
+        <div id="blueprint-wrap" aria-hidden="true">
+            <!-- blueprint visuals removed; wrapper retained as animation anchor -->
+        </div>
+
+        <!-- Layer 2: 4-image sliding strip -->
+        <div id="slide-strip-wrap">
+            <div id="slide-strip">
+                <div class="sc sc-top">
+                    <img src="image/im1.png" alt="" aria-hidden="true" />
+                    <span class="sc-label">LIVING SPACE</span>
+                </div>
+                <div class="sc sc-bot">
+                    <img src="image/im2.png" alt="" aria-hidden="true" />
+                    <span class="sc-label">MASTER SUITE</span>
+                </div>
+                <div class="sc sc-top">
+                    <img src="image/im3.png" alt="" aria-hidden="true" />
+                    <span class="sc-label">KITCHEN</span>
+                </div>
+                <div class="sc sc-bot">
+                    <img src="image/im4.png" alt="" aria-hidden="true" />
+                    <span class="sc-label">SKY AMENITY</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layer 3: Diagonal transition panels -->
+        <div id="transition-stage">
+            <div id="panel-a" class="diag-panel">
+                <img src="image/hero1.png" alt="" aria-hidden="true" />
+            </div>
+            <div id="panel-b" class="diag-panel">
+                <img src="image/hero2.png" alt="" aria-hidden="true" />
+            </div>
+        </div>
+
+    </div><!-- /intro-overlay -->
+
+    <!-- ══════════ HERO ══════════ -->
+    <section id="hero">
+        <div id="hero-image-layer">
+            <img src="image/hero1.png" alt="Yangsan Xi Park Felice" id="hero-img" />
+            <div id="hero-grad"></div>
+        </div>
+
+        <div id="hero-content">
+            <!-- id는 유지(스크립트 에러 방지), 화면에서는 숨김 처리 -->
+            <p id="hero-eyebrow">PREMIUM RESIDENCE</p>
+
+            <h1 id="hero-title" aria-label="PARK FELICE">
+                <span class="hero-char">P</span><span class="hero-char">A</span><span class="hero-char">R</span><span
+                    class="hero-char">K</span>
+                <span class="hero-char hero-space">&nbsp;</span>
+                <span class="hero-char">F</span><span class="hero-char">E</span><span class="hero-char">L</span><span
+                    class="hero-char">I</span><span class="hero-char">C</span><span class="hero-char">E</span>
+            </h1>
+
+            <!-- id는 유지, 화면에서는 숨김 처리 -->
+            <p id="hero-sub">탁월한 입지, 섬세한 설계, 프리미엄 라이프스타일</p>
+
+            <div id="hero-btns">
+                <a class="btn-outline" id="btn-call" href="tel:01012345678">혜택 상담 받기</a>
+                <a class="btn-outline" id="btn-kakao" href="https://pf.kakao.com/CHANNEL_ID" target="_blank"
+                    rel="noopener">카카오톡 문의 하기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ DETAIL / HORIZONTAL SCROLL ══════════ -->
+    <section id="detail">
+        <div class="hscroll">
+            <div class="track">
+
+                <div class="h-card card-top" data-idx="0" data-modal-img="image/popup/p1.png"
+                    data-modal-title="Premium Landscape" data-modal-category="조경 설계"
+                    data-modal-desc="자연과 여유가 공존하는 프리미엄 조경 공간" data-modal-points="엘리시안 가든|티하우스 · 자이펀 그라운드|자연 친화 단지 설계">
+                    <div class="card-img-wrap"><img src="image/im1.png" alt="Living Space" loading="lazy" /></div>
+                    <div class="card-body">
+                        <span class="card-num">01</span>
+                        <h3 class="card-title">Premium Landscape</h3>
+                        <p class="card-desc">자연과 여유가 공존하는 프리미엄 조경 공간</p>
+                    </div>
+                </div>
+
+                <div class="h-card card-bot" data-idx="1" data-modal-img="image/popup/p2.png"
+                    data-modal-title="Master Plan" data-modal-category="단지 설계" data-modal-desc="조경과 커뮤니티가 조화를 이루는 단지 설계"
+                    data-modal-points="중앙 커뮤니티 광장|동간 거리 확보 설계|보행 중심 단지 구조">
+                    <div class="card-img-wrap"><img src="image/im2.png" alt="Master Suite" loading="lazy" /></div>
+                    <div class="card-body">
+                        <span class="card-num">02</span>
+                        <h3 class="card-title">Master Plan</h3>
+                        <p class="card-desc">조경과 커뮤니티가 조화를 이루는 단지 설계</p>
+                    </div>
+                </div>
+
+                <div class="h-card card-top" data-idx="2" data-modal-img="image/popup/p3.png"
+                    data-modal-title="Community Facilities" data-modal-category="커뮤니티 시설"
+                    data-modal-desc="일상에 여유를 더하는 프리미엄 커뮤니티"
+                    data-modal-points="사우나 / 스크린 골프|피트니스 센터 / 게스트 하우스|교보문고 큐레이션 / 북카페">
+                    <div class="card-img-wrap"><img src="image/im3.png" alt="Kitchen" loading="lazy" /></div>
+                    <div class="card-body">
+                        <span class="card-num">03</span>
+                        <h3 class="card-title">Community Facilities</h3>
+                        <p class="card-desc">일상에 여유를 더하는 프리미엄 커뮤니티</p>
+                    </div>
+                </div>
+
+                <div class="h-card card-bot" data-idx="3" data-modal-img="image/popup/p4.png"
+                    data-modal-title="Unit Interior" data-modal-category="유니트 설계"
+                    data-modal-desc="자연 채광과 공간 설계가 돋보이는 프리미엄 유니트" data-modal-points="여유로운 키친 공간|효율적인 공간 설계|프리미엄 마감재">
+                    <div class="card-img-wrap"><img src="image/im4.png" alt="Sky Amenity" loading="lazy" /></div>
+                    <div class="card-body">
+                        <span class="card-num">04</span>
+                        <h3 class="card-title">Unit Interior</h3>
+                        <p class="card-desc">자연 채광과 공간 설계가 돋보이는 프리미엄 유니트</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════ LOCATION ══════════ -->
+    <section id="location-section">
+
+        <div class="location-head">
+            <p class="location-sub">PRIME LOCATION</p>
+            <h2 class="location-title">프리미엄 생활 인프라</h2>
+        </div>
+
+        <div class="location-map">
+            <img src="image/map.png" alt="양산 자이 파크펠리체 위치">
+        </div>
+
+        <div class="location-points">
+            <div class="loc-item">
+                <strong>이마트 트레이더스</strong>
+                <span>대형 쇼핑 인프라</span>
+            </div>
+
+            <div class="loc-item">
+                <strong>센트럴파크</strong>
+                <span>도보 공원 생활</span>
+            </div>
+
+            <div class="loc-item">
+                <strong>학교 · 병원</strong>
+                <span>안심 생활 환경</span>
+            </div>
+
+            <div class="loc-item">
+                <strong>부산 · 울산 접근성</strong>
+                <span>광역 생활권</span>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- ══════════ FOOTER ══════════ -->
+    <footer id="site-footer">
+        <div id="footer-inner">
+            <p id="footer-eyebrow">XI YS RESIDENCE</p>
+            <h2 id="footer-headline">지금 바로 연결하세요</h2>
+            <p id="footer-sub">전문 상담팀이 맞춤 안내를 도와드립니다.</p>
+
+            <a href="tel:01059361556" class="btn-outline btn-lg" id="btn-main-line">
+                <span class="cta-main">300만원 특별 혜택 상담</span>
+                <span class="cta-sub">(전화 연결)</span>
+            </a>
+
+            <p id="footer-copy">© 2026 Park Felice — Third Team. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ══════════ CARD MODAL / BOTTOM-SHEET ══════════ -->
+    <div id="card-modal" class="modal" aria-hidden="true" role="presentation">
+        <div class="modal-backdrop" data-close></div>
+        <div class="modal-sheet" role="dialog" aria-modal="true" aria-label="Card detail">
+            <button class="modal-close" data-close aria-label="Close">&#215;</button>
+            <div class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js" defer></script>
+
+</body>
+
+</html>

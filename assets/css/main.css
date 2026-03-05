@@ -1,0 +1,1044 @@
+/* ============================================================
+   Xi YS — Premium Residences | main.css
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+}
+
+:root {
+    --white: #fff;
+    --off: #f8f8f6;
+    --ink: #1a1a1a;
+    --mid: #555;
+    --light: #999;
+    --line: #e0e0e0;
+    --accent: #b89c7a;
+    --font: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    --ease: cubic-bezier(.22, 1, .36, 1);
+    --bp-bg: #0b1020;
+}
+
+html {
+    font-family: var(--font);
+    font-size: 16px;
+    background: var(--white);
+    color: var(--ink);
+    overflow-x: hidden;
+    /* mobile guard: no horizontal bleed */
+}
+
+body {
+    overflow-x: hidden
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 36px;
+    border: 1px solid var(--ink);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font);
+    font-size: .85rem;
+    font-weight: 400;
+    letter-spacing: .12em;
+    cursor: pointer;
+    transition: background .3s var(--ease), color .3s var(--ease),
+        border-color .3s var(--ease), transform .25s var(--ease);
+}
+
+.btn-outline:hover {
+    background: var(--ink);
+    color: var(--white);
+    transform: translateY(-2px)
+}
+
+.btn-outline.btn-lg {
+    padding: 18px 52px;
+    font-size: .9rem;
+    letter-spacing: .15em
+}
+
+/* ══════════════════════════════════════════════════════
+   INTRO OVERLAY — 3-layer layered system
+   ══════════════════════════════════════════════════════ */
+
+/* Layer 0: Global overlay container — hidden by default, shown only when JS adds body.intro-playing.
+   This prevents any flash/stick on reload regardless of sessionStorage state. */
+#intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    /* Layered warm gradient: slightly warmer at bottom, cooler at top */
+    background:
+        linear-gradient(170deg,
+            #f0f1f4 0%,
+            #f6f7f9 35%,
+            #faf9f7 65%,
+            #f4f3f0 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* DEFAULT: hidden — JS must explicitly add body.intro-playing to reveal */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+}
+
+/* Only show overlay while intro is explicitly playing */
+body.intro-playing #intro-overlay {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Spotlight: soft warm center glow + edge vignette */
+#intro-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        /* centre spotlight */
+        radial-gradient(ellipse 70% 55% at 50% 42%,
+            rgba(255, 252, 245, 0.72) 0%,
+            rgba(248, 246, 242, 0.18) 55%,
+            transparent 80%),
+        /* edge vignette */
+        radial-gradient(ellipse 130% 120% at 50% 50%,
+            transparent 50%,
+            rgba(210, 208, 204, 0.16) 80%,
+            rgba(185, 182, 176, 0.22) 100%);
+}
+
+/* Noise grain: ultra-subtle inline SVG turbulence pattern */
+#intro-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.028;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+}
+
+/* Layer 1 – Single centered tower sketch: watermark */
+#intro-watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(180px, 24vw, 320px);
+    z-index: 0;
+    pointer-events: none;
+    overflow: visible;
+}
+
+#bldg-sketch {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0.15;
+    filter: grayscale(100%) contrast(0.9) brightness(1.1);
+    pointer-events: none;
+}
+
+/* Layer 2 – Blueprint Panel: invisible anchor (no visuals) */
+#blueprint-wrap {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+/* Slide strip */
+#slide-strip-wrap {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 44vh;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#slide-strip {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 3vw;
+    /* start position set by JS */
+    width: max-content;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.sc {
+    flex-shrink: 0;
+    width: clamp(220px, 28vw, 360px);
+    height: 36vh;
+    overflow: hidden;
+    position: relative;
+}
+
+.sc-top {
+    align-self: flex-start;
+    margin-top: 0
+}
+
+.sc-bot {
+    align-self: flex-end;
+    margin-bottom: 0
+}
+
+.sc img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.sc-label {
+    position: absolute;
+    bottom: 12px;
+    left: 14px;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .22em;
+    color: rgba(255, 255, 255, .8);
+    text-transform: uppercase;
+}
+
+/* Transition panels */
+#transition-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.diag-panel {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    clip-path: polygon(0% 0%, 1% 0%, 1% 1%, 0% 1%);
+    will-change: clip-path, transform;
+    transform-origin: 50% 50%;
+}
+
+.diag-panel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+/* ── HERO ── */
+#hero {
+    position: relative;
+    width: 100%;
+    height: clamp(560px, 100vh, 100vh);
+    min-height: 560px;
+    overflow: hidden;
+    background: var(--white)
+}
+
+#hero-image-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    clip-path: polygon(0% 0%, 1% 0%, 1% 1%, 0% 1%);
+    will-change: clip-path;
+}
+
+/* ── Hero image — PC crop stabilisation ──────────────────
+   Always object-fit:cover (no letterboxing).
+   object-position tuned per breakpoint so subject visible.
+   No scale()/transform zoom anywhere.
+   ────────────────────────────────────────────────────── */
+#hero-image-layer img {
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+@media (min-width: 1024px) {
+    #hero-image-layer img {
+        object-position: center 35%;
+    }
+}
+
+@media (min-width: 1440px) {
+    #hero-image-layer img {
+        object-position: center 38%;
+    }
+}
+
+
+#hero-grad {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, .45) 100%);
+}
+
+#hero-content {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Clamped padding: wide desktop gets larger side margins to narrow the text block */
+    padding: 0 clamp(24px, 8vw, 180px);
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+
+#hero-content.visible {
+    opacity: 1;
+    transform: translateY(0)
+}
+
+
+#hero-eyebrow {
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: .35em;
+    color: rgba(255, 255, 255, .75);
+    margin-bottom: 16px
+}
+
+#hero-title {
+    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-weight: 200;
+    letter-spacing: .2em;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
+/* Individual character spans for stagger reveal */
+.hero-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.18em);
+}
+
+.hero-space {
+    width: 0.25em;
+}
+
+#hero-sub {
+    font-size: clamp(.8rem, 2vw, .95rem);
+    font-weight: 300;
+    letter-spacing: .15em;
+    color: rgba(255, 255, 255, .7);
+    margin-bottom: 44px;
+    opacity: 0;
+}
+
+#hero-sub.visible {
+    opacity: 1;
+}
+
+#hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    opacity: 0;
+}
+
+#hero-btns.visible {
+    opacity: 1;
+}
+
+#hero-btns .btn-outline {
+    border-color: rgba(255, 255, 255, .6);
+    color: var(--white)
+}
+
+#hero-btns .btn-outline:hover {
+    background: rgba(255, 255, 255, .15);
+    border-color: var(--white);
+    color: var(--white)
+}
+
+/* pin-spacer: pure layout scaffold — no backgrounds, no stacking context tricks */
+.pin-spacer,
+[class*="pin-spacer"] {
+    background: transparent !important;
+    box-shadow: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+}
+
+.pin-spacer::before,
+.pin-spacer::after,
+[class*="pin-spacer"]::before,
+[class*="pin-spacer"]::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* #detail: transparent background so #gunmetal-stage (below) shows through.
+   NO isolation:isolate — we do not want a new stacking context here.
+   z-index:3 puts it above the stage (z-index:2) but below modals. */
+#detail {
+    position: relative;
+    width: 100%;
+    background: transparent;
+    z-index: 3;
+}
+
+/* ── GUNMETAL STAGE — fixed full-viewport layer behind all content ──
+   z-index: 0 keeps it below every section (sections are z-index: 1+).
+   Fades in/out via opacity transition when body class changes. ── */
+#gunmetal-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    background:
+        repeating-linear-gradient(0deg,
+            transparent 0px, transparent 3px,
+            rgba(255, 255, 255, 0.012) 3px, rgba(255, 255, 255, 0.012) 4px),
+        repeating-linear-gradient(90deg,
+            transparent 0px, transparent 80px,
+            rgba(255, 255, 255, 0.008) 80px, rgba(255, 255, 255, 0.008) 81px),
+        linear-gradient(90deg,
+            rgba(0, 0, 0, 0.30) 0%, transparent 24%,
+            transparent 76%, rgba(0, 0, 0, 0.30) 100%),
+        linear-gradient(180deg,
+            rgba(0, 0, 0, 0.18) 0%, transparent 15%,
+            transparent 85%, rgba(0, 0, 0, 0.18) 100%),
+        #151a1e;
+}
+
+/* Stage active: fade in */
+body.detail-stage-active #gunmetal-stage,
+body.stage-dark #gunmetal-stage {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Sections must sit above the stage */
+#hero,
+#detail,
+#site-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile: stage never shows (no pin on mobile) */
+@media (max-width: 767px) {
+    #gunmetal-stage {
+        display: none !important;
+    }
+}
+
+.hscroll {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    z-index: 1;
+}
+
+.hscroll::before,
+.hscroll::after {
+    display: none;
+}
+
+.track {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 40px;
+    padding: 0 80px;
+    will-change: transform;
+    position: relative;
+    /* z-index:4 → above gunmetal stage (z-index:2) and #detail (z-index:3) */
+    z-index: 4;
+}
+
+#detail .h-card {
+    flex-shrink: 0;
+    flex: 0 0 auto;
+    width: max(260px, 30vw);
+    background: #f5f5f3;
+    border: none;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(48px);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.10),
+        0 8px 28px rgba(0, 0, 0, 0.12),
+        0 24px 56px rgba(0, 0, 0, 0.08);
+    outline: 1px solid rgba(0, 0, 0, 0.07);
+    outline-offset: 0;
+    transition: box-shadow .4s var(--ease), outline-color .4s var(--ease), transform .4s var(--ease);
+}
+
+#detail .h-card:hover {
+    box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.12),
+        0 14px 40px rgba(0, 0, 0, 0.15),
+        0 32px 72px rgba(0, 0, 0, 0.10);
+    outline-color: rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+}
+
+#detail .card-top {
+    align-self: flex-start;
+    margin-top: -4vh
+}
+
+#detail .card-bot {
+    align-self: flex-end;
+    margin-bottom: -4vh
+}
+
+#detail .card-img-wrap {
+    width: 100%;
+    height: 240px;
+    overflow: hidden
+}
+
+#detail .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: none;
+    transition: transform .6s var(--ease);
+}
+
+#detail .h-card:hover .card-img-wrap img {
+    transform: scale(1.04)
+}
+
+.card-body {
+    padding: 28px 28px 32px
+}
+
+.card-num {
+    display: block;
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: .25em;
+    color: var(--accent);
+    margin-bottom: 12px
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: .04em;
+    color: #1a1a1a;
+    margin-bottom: 12px
+}
+
+.card-desc {
+    font-size: .82rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: #555
+}
+
+/* ── FOOTER ── */
+#site-footer {
+    background: var(--off);
+    padding: 120px 24px;
+    text-align: center;
+    border-top: 1px solid var(--line)
+}
+
+#footer-inner {
+    max-width: 640px;
+    margin: 0 auto
+}
+
+#footer-eyebrow {
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .4em;
+    color: var(--light);
+    margin-bottom: 24px
+}
+
+#footer-headline {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 200;
+    letter-spacing: .08em;
+    color: var(--ink);
+    margin-bottom: 16px
+}
+
+#footer-sub {
+    font-size: .88rem;
+    font-weight: 300;
+    color: var(--mid);
+    line-height: 1.8;
+    margin-bottom: 48px;
+    letter-spacing: .05em
+}
+
+#footer-copy {
+    margin-top: 56px;
+    font-size: .72rem;
+    font-weight: 300;
+    letter-spacing: .15em;
+    color: var(--light)
+}
+
+/* ── BRAND TITLE SECTION ── */
+#brand-title-section {
+    width: 100%;
+    padding: 100px 24px 110px;
+    text-align: center;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+#brand-title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+#brand-title-sub {
+    font-family: 'Pretendard', sans-serif;
+    font-size: .65rem;
+    font-weight: 300;
+    letter-spacing: .5em;
+    color: #b88a3c;
+    margin-bottom: 20px;
+    opacity: 0.75;
+    text-transform: uppercase;
+}
+
+#brand-title-text {
+    font-family: 'Noto Serif KR', 'Didot', 'IM Fell English', 'Palatino Linotype', 'Georgia', serif;
+    font-size: clamp(1.9rem, 4.5vw, 3.4rem);
+    font-weight: 400;
+    letter-spacing: .06em;
+    line-height: 1.1;
+    white-space: nowrap;
+    /* Metallic gold gradient left → right */
+    background: linear-gradient(105deg,
+            #8a6520 0%,
+            #b88a3c 18%,
+            #e3c27a 38%,
+            #f5dfa0 50%,
+            #e3c27a 62%,
+            #c6a15b 80%,
+            #96711f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Very subtle shine shimmer */
+    background-size: 200% auto;
+    animation: gold-shine 5s linear infinite;
+}
+
+@keyframes gold-shine {
+    0% {
+        background-position: 0% center;
+    }
+
+    50% {
+        background-position: 100% center;
+    }
+
+    100% {
+        background-position: 0% center;
+    }
+}
+
+#brand-title-rule {
+    width: clamp(60px, 10vw, 100px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #c6a15b, transparent);
+    margin-top: 28px;
+    opacity: 0.55;
+}
+
+/* ── REDUCED MOTION ── */
+@media(prefers-reduced-motion:reduce) {
+    #intro-overlay {
+        display: none !important
+    }
+
+    #hero-image-layer {
+        clip-path: polygon(0% 0%, 110% 0%, 110% 110%, 0% 110%) !important
+    }
+
+    #hero-content {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important
+    }
+
+    .hero-char {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    #hero-sub,
+    #hero-btns {
+        opacity: 1 !important;
+    }
+
+    .h-card {
+        opacity: 1 !important;
+        transform: none !important
+    }
+}
+
+/* ── MOBILE (≤ 767px) ── */
+@media(max-width:767px) {
+
+    /* Slide strip: full-width, less height */
+    #slide-strip-wrap {
+        height: 36vh;
+    }
+
+    .sc {
+        width: clamp(160px, 72vw, 280px);
+        height: 28vh;
+    }
+
+    /* Horizontal scroll — pin+scrub used on ALL breakpoints */
+    .hscroll {
+        overflow: hidden;
+    }
+
+    .track {
+        /* NEVER wrap — single row on mobile too.
+           Mobile scrolls natively via overflow-x on .hscroll. */
+        flex-wrap: nowrap;
+        gap: 24px;
+        padding: 20px 20px 20px;
+    }
+
+    /* Cards: narrower on mobile */
+    .h-card {
+        width: clamp(220px, 68vw, 320px);
+    }
+
+    .card-top {
+        margin-top: -2vh;
+    }
+
+    .card-bot {
+        margin-bottom: -2vh;
+    }
+
+    .card-img-wrap {
+        height: 160px;
+    }
+
+    .card-body {
+        padding: 18px 18px 22px;
+    }
+
+    /* Hero buttons: stack on tiny screens */
+    #hero-btns {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    /* Footer: less generous padding */
+    #site-footer {
+        padding: 80px 20px;
+    }
+
+    /* Brand title: scale down, allow wrap gracefully */
+    #brand-title-section {
+        padding: 72px 20px 80px;
+    }
+
+    #brand-title-text {
+        white-space: normal;
+        font-size: clamp(1.4rem, 6vw, 2rem);
+        letter-spacing: .03em;
+    }
+
+    /* Tower watermark: slightly less opaque on mobile */
+    #bldg-sketch {
+        opacity: 0.11;
+    }
+
+    /* Gallery background: reduce spotlight+grain intensity on mobile */
+    #intro-overlay::before {
+        opacity: 0.6;
+    }
+
+    #intro-overlay::after {
+        opacity: 0.018;
+    }
+
+    /* Scroll section gallery: reduce on mobile */
+    .hscroll::before {
+        opacity: 0.55;
+    }
+
+    .hscroll::after {
+        opacity: 0.018;
+    }
+}
+
+/* ================================================================
+   CLEAN OVERRIDE — keep HS stable, remove intro background fights
+   ================================================================ */
+
+/* pin-spacer: layout-only, no visual styles */
+[class*="pin-spacer"] {
+    background: transparent !important;
+}
+
+/* ================================================================
+   DESKTOP (≥768px): HS track must never wrap
+   ================================================================ */
+@media (min-width: 768px) {
+    #detail .hscroll {
+        overflow: hidden;
+        position: relative;
+    }
+
+    #detail .track {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        align-items: center;
+        will-change: transform;
+    }
+
+    #detail .track>* {
+        flex: 0 0 auto !important;
+    }
+}
+
+/* ================================================================
+   MOBILE (≤767px): vertical stacked card layout, no horizontal scroll
+   ================================================================ */
+@media (max-width: 767px) {
+    #detail .hscroll {
+        overflow: visible;
+        height: auto;
+    }
+
+    #detail .track {
+        display: block !important;
+        transform: none !important;
+    }
+
+    #detail .track>* {
+        width: 100% !important;
+        flex: unset !important;
+        margin: 0 0 16px 0;
+    }
+}
+
+
+
+/* ================================================================
+   CARD MODAL / BOTTOM-SHEET
+   z-index: 9999 — above intro overlay (1000), above everything.
+   ================================================================ */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    z-index: 9999;
+    /* Smooth entry */
+}
+
+.modal[aria-hidden="false"] {
+    display: block;
+}
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.60);
+    cursor: pointer;
+}
+
+/* Desktop: centred dialog */
+.modal-sheet {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(860px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    border-radius: 16px;
+    padding: 32px 36px;
+    background: #0b0d12;
+    color: #e8e4de;
+    font-family: var(--font);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.60);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, .15) transparent;
+}
+
+/* Mobile: slides up from bottom */
+@media (max-width: 768px) {
+    .modal-sheet {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: auto;
+        transform: none;
+        width: 100%;
+        max-height: 80vh;
+        border-radius: 18px 18px 0 0;
+        padding: 24px 20px 32px;
+    }
+}
+
+/* Close button — sticky so always visible while scrolling */
+.modal-close {
+    position: sticky;
+    top: 0;
+    float: right;
+    margin: -8px -8px 12px 12px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.10);
+    color: rgba(255, 255, 255, 0.80);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.20);
+}
+
+/* Modal body: reuse card typography with light text on dark */
+.modal-body .card-img-wrap {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 24px;
+}
+
+.modal-body .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.modal-body .card-num {
+    display: block;
+    font-size: .7rem;
+    font-weight: 300;
+    letter-spacing: .28em;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.modal-body .card-title {
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: .06em;
+    color: #f0ece6;
+    margin-bottom: 16px;
+}
+
+.modal-body .card-desc {
+    font-size: .9rem;
+    font-weight: 300;
+    line-height: 1.9;
+    color: rgba(232, 228, 220, 0.72);
+}
+
+/* Category label above bullet points */
+.modal-category {
+    display: inline-block;
+    margin: 14px 0 10px;
+    font-size: .68rem;
+    font-weight: 400;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(184, 156, 122, 0.35);
+    border-radius: 100px;
+    padding: 4px 14px;
+}
+
+/* Bullet list in modal */
+.modal-points {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+.modal-points li {
+    font-size: .88rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(232, 228, 220, 0.80);
+    padding-left: 1.1em;
+    position: relative;
+}
+
+.modal-points li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: .75rem;
+}
