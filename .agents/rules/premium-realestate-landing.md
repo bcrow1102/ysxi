@@ -53,12 +53,12 @@ Use ONLY local images from the /image folder.
 
 Image path format must be EXACTLY:
 
-image/hero1.png
-image/hero2.png
-image/im1.png
-image/im2.png
-image/im3.png
-image/im4.png
+image/hero1.jpg
+image/hero2.jpg
+image/im1.jpg
+image/im2.jpg
+image/im3.jpg
+image/im4.jpg
 
 Forbidden:
 ./image/
