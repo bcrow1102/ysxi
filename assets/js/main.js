@@ -10,6 +10,10 @@
    1.9s  → Hero wipe + logo reveal
    ~3.1s → body.intro-playing removed; overlay DOM removed
    ============================================================ */
+ScrollTrigger.config({
+    ignoreMobileResize: true
+});
+
 console.log('[HS] main.js loaded', location.href);
 (function () {
     'use strict';

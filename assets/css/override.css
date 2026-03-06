@@ -563,3 +563,163 @@ body {
 #footer-copy {
     white-space: nowrap;
 }
+
+/* =========================================================
+   MOBILE RENDER STABILIZATION ONLY
+   - 디자인 변경 없음
+   - 모바일 렌더링/크롭/애니 안정화
+   ========================================================= */
+
+html,
+body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* iOS/모바일 vh 흔들림 방지 */
+:root {
+    --app-vh: 100vh;
+}
+
+/* -------------------------
+   HERO
+------------------------- */
+#hero {
+    min-height: var(--app-vh);
+    min-height: 100svh;
+    min-height: 100dvh;
+    overflow: hidden;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+#hero-image-layer,
+#hero-image-layer img,
+#hero-clip,
+.hero-clip,
+.hero-media,
+.hero-media img {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* 이미지 리샘플/깜빡임 완화 */
+#hero-image-layer img,
+.hero-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: auto;
+}
+
+/* -------------------------
+   DETAIL / HSCROLL
+------------------------- */
+#detail,
+#detail .hscroll,
+#detail .track,
+#detail .panel {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+#detail {
+    overflow: hidden;
+}
+
+/* -------------------------
+   LOCATION
+------------------------- */
+#location-section,
+.loc-item,
+.loc-panel,
+.loc-trigger,
+.loc-content {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* -------------------------
+   MOBILE ONLY
+------------------------- */
+@media (max-width: 991px) {
+
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    /* 모바일에서 과도한 will-change 남발 금지 */
+    #hero-image-layer,
+    #hero-image-layer img,
+    #detail .track,
+    .loc-item,
+    .loc-panel {
+        will-change: auto;
+    }
+
+    /* clip-path 애니 중 경계 떨림 완화 */
+    #hero-image-layer,
+    #hero-clip,
+    .hero-clip {
+        contain: layout paint style;
+    }
+
+    /* 모바일에서 부동소수점 흔들림 완화 */
+    #detail .track {
+        transform: translate3d(0, 0, 0);
+    }
+
+    /* 아코디언 열릴 때 미세 깜빡임 방지 */
+    .loc-content {
+        overflow: hidden;
+    }
+}
+
+/* -------------------------
+   SMALL MOBILE
+------------------------- */
+@media (max-width: 767px) {
+    #hero {
+        min-height: var(--app-vh);
+        min-height: 100svh;
+    }
+}
+
+/* MOBILE STABILITY */
+
+@media (max-width: 991px) {
+
+    #hero,
+    #detail,
+    #location-section {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+    }
+
+    #hero-image-layer img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    body {
+        overflow-x: hidden;
+    }
+
+}
+
+.loc-trigger {
+    -webkit-tap-highlight-color: transparent;
+}
