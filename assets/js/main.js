@@ -594,4 +594,23 @@ console.log('[HS] main.js loaded', location.href);
         }
     });
 }());
+/* LOCATION ACCORDION */
 
+document.querySelectorAll('.js-loc-card').forEach(card => {
+
+    const btn = card.querySelector('.loc-trigger')
+
+    btn.addEventListener('click', () => {
+
+        const isOpen = card.classList.contains('is-open')
+
+        document.querySelectorAll('.js-loc-card')
+            .forEach(c => c.classList.remove('is-open'))
+
+        if (!isOpen) {
+            card.classList.add('is-open')
+        }
+
+    })
+
+})
