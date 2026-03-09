@@ -724,7 +724,7 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 #btn-sms{
-  background:#C9A24A;
-  color:#000;
-  border:none;
+  background:#C9A24A !important;
+  color:#111 !important;
+  border:1px solid #C9A24A !important;
 }
