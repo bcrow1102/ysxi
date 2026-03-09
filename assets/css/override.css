@@ -724,6 +724,18 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 #btn-sms{
+   #hero-btns .btn-outline{
+  font-size:15px;
+  padding:12px 24px;
+}
+
+#btn-sms{
+  background:#C9A24A !important;
+  color:#111 !important;
+  border:1px solid #C9A24A !important;
+  font-size:15px;
+  padding:12px 24px;
+}
   background:#C9A24A !important;
   color:#111 !important;
   border:1px solid #C9A24A !important;
