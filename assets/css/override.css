@@ -723,3 +723,8 @@ body {
 .loc-trigger {
     -webkit-tap-highlight-color: transparent;
 }
+#btn-sms{
+  background:#C9A24A;
+  color:#000;
+  border:none;
+}
